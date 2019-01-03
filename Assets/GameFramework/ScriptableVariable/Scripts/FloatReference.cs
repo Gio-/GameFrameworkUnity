@@ -11,6 +11,7 @@ namespace GameFramework
 		private float m_constantValue = 0;
 
 		[UnityEngine.SerializeField]
+    	#pragma warning disable CS0649
 		private FloatVariable m_floatVariable;
 
 		public float Value 

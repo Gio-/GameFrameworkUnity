@@ -6,7 +6,7 @@ namespace GameFramework
 	public class FloatVariable : ScriptableObject 
 	{
 		[SerializeField]
-		private float m_baseValue;
+		private float m_baseValue = 0.0f;
 
 		[ReadOnlyAttribute]
 		[SerializeField]
