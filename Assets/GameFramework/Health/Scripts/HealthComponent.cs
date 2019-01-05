@@ -20,7 +20,9 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
     [SerializeField]
     private bool    m_isInvulnerable            = false;
 
-    [Space(10), SerializeField]
+    [Space(10),SerializeField]
+    private bool    m_isInvulnerableAfterEnabled= false;
+    [SerializeField]
     private bool    m_invulnerableAfterDamage   = false;
 
     [SerializeField]
@@ -202,7 +204,8 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
     public void OnEnable()
     {
         /// After spawning, is invulnerable for a short time
-        EnableInvulnerability();
+        if(m_isInvulnerableAfterEnabled)
+            EnableInvulnerability();
     }
 
     public void Update()
