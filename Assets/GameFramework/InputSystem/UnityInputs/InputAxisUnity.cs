@@ -28,19 +28,7 @@ namespace GameFramework
             else
                 return playerId > 0 ? Input.GetAxisRaw(inputName + "_" + playerId) : Input.GetAxisRaw(inputName);
         }
-
-        public void GainControl()
-        {
-            base.GainControl();
-        }
-        public void ReleaseControl()
-        {
-            base.ReleaseControl();
-        }
-        public bool CanExecute()
-        {
-            return base.CanExecute();
-        }
+        
         #endregion
     }
 }

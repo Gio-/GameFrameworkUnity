@@ -14,22 +14,22 @@ namespace GameFramework
     {
         /// The Game is not running but is ready to
         /// start.
-        Ready,
+        Ready = 1 << 1,
         /// Game is running and players are ready
         /// to play or they are already playing.
-        Running,
+        Running = 1 << 2,
 
         /// Game is over and players lose this
         /// round.
-        GameOver,
+        GameOver = 1 << 3,
 
         /// Game is over and players win this 
         /// round.
-        GameWin,
+        GameWin = 1 << 4,
 
         /// Game is not over yet, but it is 
         /// temporarily stopped.
-        Pause
+        Pause = 1 << 5
     }   
 
     /// <summary>
@@ -70,5 +70,12 @@ namespace GameFramework
             if(OnGameStateChange != null)
                 OnGameStateChange(m_currentGameState);
         }
+
+
+        public static bool IsStateRunning(GameStateTypes state)
+        {
+            return Utilities.EnumIsInBitmaskEnum((int)state, (int)CurrentGameState);
+        }
+
     } 
 }

@@ -25,7 +25,7 @@ namespace GameFramework
             if (!m_isEnabled || !m_haveControl)
                 return false;
             if (allowedStateOverride != 0)
-                return GameState.CurrentGameState.Equals(allowedStateOverride);
+                return GameState.IsStateRunning(allowedStateOverride);
             else
                 return true;
         }

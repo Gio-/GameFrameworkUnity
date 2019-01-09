@@ -104,7 +104,7 @@ namespace GameFramework
         #endregion
         protected virtual bool CanExecute()
         {
-            return IsEnabled && HaveControl && GameState.CurrentGameState.Equals(m_globalGameStatesAllowed);
+            return IsEnabled && HaveControl && GameState.IsStateRunning(m_globalGameStatesAllowed);
         }
         #endregion
     }
