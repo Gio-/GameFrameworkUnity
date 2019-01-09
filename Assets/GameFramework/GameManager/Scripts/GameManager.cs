@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {      
-        if(GameState.CurrentGameState != m_runningGameState)
+        if(!GameState.IsStateRunning(m_runningGameState))
             return;
 
         /// Update GameMode Status
