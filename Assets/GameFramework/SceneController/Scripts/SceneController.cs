@@ -1,27 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
     #region Private Field
-    #pragma warning disable 414
-    private bool m_Transitioning = false;
     ///Scene Controller Instance
     private static SceneController instance;
     #endregion
-
-    #region Public Field
-    ///All Scene
-    [Space(2)]
-    [Header("Scene Data")]
-    [Tooltip("Drop here all scene than you need")]
-    public SceneData m_sceneGame;
-    public SceneData m_sceneMenu;
-    public SceneData m_sceneUI;
-    #endregion
-
+ 
     /// Constructor
     public static SceneController Instance {
         get {
@@ -34,7 +21,6 @@ public class SceneController : MonoBehaviour
             return instance;
         }
     }
-    
     public static SceneController Create()
     {
         GameObject sceneControllerGameObject = new GameObject("SceneController");
@@ -95,30 +81,31 @@ public class SceneController : MonoBehaviour
     /// </summary>
     /// <param name="_sceneData"></param>
     /// <returns></returns>
-    protected IEnumerator Unloading(SceneData _sceneData)
+    protected IEnumerator Transition(SceneData _sceneData)
     {
-        ///Start load Async
-        yield return SceneManager.UnloadSceneAsync(_sceneData.SceneName);
+        _sceneData.LoadingProgress = 0;
+
+        AsyncOperation _asyncOperation = SceneManager.LoadSceneAsync(_sceneData.SceneName, _sceneData.LoadType);
+
+        while(_asyncOperation.isDone && _asyncOperation.progress < .9f)
+        {
+            _sceneData.LoadingProgress = _asyncOperation.progress;
+            yield return null;
+        }
+        _sceneData.LoadingProgress = _asyncOperation.progress;
+        ///Call Load scene action
+        _sceneData.OnSceneLoaded?.Invoke();
     }
-    
+
     /// <summary>
     /// Called to start the loading async of scene
     /// </summary>
     /// <param name="_sceneData"></param>
     /// <returns></returns>
-    protected IEnumerator Transition(SceneData _sceneData)
+    protected IEnumerator Unloading(SceneData _sceneData)
     {
-        m_Transitioning = true;
-
         ///Start load Async
-        yield return SceneManager.LoadSceneAsync(_sceneData.SceneName, _sceneData.LoadType);
-
-        ///Call Load scene action
-        _sceneData.OnSceneLoaded?.Invoke();
-        ///Call Fade
-        //yield return StartCoroutine(ScreenFader.FadeSceneIn());
-
-        m_Transitioning = false;
+        yield return SceneManager.UnloadSceneAsync(_sceneData.SceneName);
     }
     #endregion
 }

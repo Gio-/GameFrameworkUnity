@@ -9,9 +9,10 @@ public enum SceneType
     UiScene
 }
 
-[CreateAssetMenu(menuName = "Scene/SceneData")]
+[CreateAssetMenu(menuName = "SceneData/NewSceneData")]
 public class SceneData : ScriptableObject
 {
+    [SerializeField]
     private string m_sceneName;
     [Header("Action callled at the end of scene loaded")]
     [SerializeField]
@@ -23,7 +24,11 @@ public class SceneData : ScriptableObject
     [SerializeField]
     private SceneType m_sceneType = SceneType.GameScene;
 
-    public string           SceneName       { get { return m_sceneName;     } set { m_sceneName = value; } }
+    //Give the progress state on a range of(0,1)
+    private float m_loadingProgress = 0;
+
+    public float            LoadingProgress { get { return m_loadingProgress; } set { m_loadingProgress = value; } }
+    public string           SceneName       { get { return m_sceneName;     }   set { m_sceneName = value; } }
     public UnityEvent       OnSceneLoaded   { get { return m_OnSceneLoaded; } }
     public LoadSceneMode    LoadType        { get { return m_loadType;      } }
     public SceneType        SceneType       { get { return m_sceneType;     } }
