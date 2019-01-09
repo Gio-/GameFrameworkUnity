@@ -63,9 +63,44 @@ public class SceneController : MonoBehaviour
     {
         Instance.StartCoroutine(Transition(_targetScene));
     }
+
+    public void UnloadAsync(SceneData _sceneData)
+    {
+        Instance.StartCoroutine(Unloading(_sceneData));
+    }
+
+    /// <summary>
+    /// Remove scene 
+    /// </summary>
+    /// <param name="_sceneData"></param>
+    public void RemoveScene(SceneData _sceneData)
+    {
+        SceneManager.UnloadScene(_sceneData.SceneName);
+    }
+    
+    /// <summary>
+    /// Add additional scene Additive
+    /// </summary>
+    /// <param name="_sceneData"></param>
+    public void AddScene(SceneData _sceneData)
+    {
+        SceneManager.LoadScene(_sceneData.SceneName, LoadSceneMode.Additive);
+    }
+
     #endregion
 
     #region Private-Method
+    /// <summary>
+    /// Called to start the loading async of scene
+    /// </summary>
+    /// <param name="_sceneData"></param>
+    /// <returns></returns>
+    protected IEnumerator Unloading(SceneData _sceneData)
+    {
+        ///Start load Async
+        yield return SceneManager.UnloadSceneAsync(_sceneData.SceneName);
+    }
+    
     /// <summary>
     /// Called to start the loading async of scene
     /// </summary>
