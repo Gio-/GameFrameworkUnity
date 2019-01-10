@@ -10,17 +10,17 @@ public class Globals
 {
 	public class Tags 
 	{
-        	//public const string PlayerTag = "PlayerTag";
-        	//public const string BossTag   = "BossTag";
+        //public const string PlayerTag = "PlayerTag";
+        //public const string BossTag   = "BossTag";
 	}
 
 	public class Event 
 	{
-        	//public const string StartGameEvent = "OnStartGame";
-    	}
+        //public const string StartGameEvent = "OnStartGame";
+    }
 
-    	public class Layers 
+    public class Layers 
 	{
-        	//public const string UglyWallLayer = "UglyWallLayer";
+        //public const string UglyWallLayer = "UglyWallLayer";
 	}
 }

@@ -37,7 +37,7 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
     [Header("On Take Damage Event")]
     public UnityEvent TakeDamageEvent;
     
-    public delegate void DamagerDefinitionHandler(HealthComponent h, GameObject damager);
+    public delegate void DamagerDefinitionHandler(HealthComponent h, DamageInfo info);
     public delegate void HealthComponentHandler(HealthComponent h);
     public static event  DamagerDefinitionHandler OnDeathEvent;
     public event         DamagerDefinitionHandler OnTakeDamageEvent;
@@ -92,23 +92,23 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
     /// </summary>
     /// <param name="value">Value of damage</param>
     /// <param name="damager">Gameobject that make damage</param>
-    public void Hit(float value, GameObject damager)
+    public void Hit(DamageInfo info)
     {
         if(m_isInvulnerable || m_enableGodMode)
             return;
 
-        Set(m_health - value);
+        Set(m_health - info.Damage);
 
         if(m_health <= m_healthRange.x)
         {
-            ThrowOnDeathEvent(damager);
+            ThrowOnDeathEvent(info);
         }
         else
         {
             if(m_invulnerableAfterDamage)
                 EnableInvulnerability();
 
-            ThrowTakeDamageEvent(damager);
+            ThrowTakeDamageEvent(info);
         }
     }
 
@@ -143,11 +143,11 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
     }
 
     #region Privates
-    private void ThrowTakeDamageEvent(GameObject damager)
+    private void ThrowTakeDamageEvent(DamageInfo info)
     {          
         /// Standard Event  
         if(OnTakeDamageEvent != null)
-            OnTakeDamageEvent(this, damager);
+            OnTakeDamageEvent(this, info);
 
         /// Unity Event
         if(TakeDamageEvent != null)
@@ -165,11 +165,11 @@ public class HealthComponent : MonoBehaviour, IDamageable<float>
             GainHealthEvent.Invoke();
     }
 
-    private void ThrowOnDeathEvent(GameObject damager)
+    private void ThrowOnDeathEvent(DamageInfo info)
     {
         /// Standard Event
         if(OnDeathEvent != null)
-            OnDeathEvent(this, damager);
+            OnDeathEvent(this, info);
 
         /// Unity Event
         if(DeathEvent != null)

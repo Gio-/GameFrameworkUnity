@@ -30,6 +30,11 @@ namespace GameFramework
             return ((1 << layer) & layerMask.value) != 0;
         }
 
+        public static bool LayerIsInLayerMask(int layer, UnityEngine.GameObject gameObject)
+        {
+            return ((1 << layer) & gameObject.layer) != 0;
+        }
+
         public static bool EnumIsInBitmaskEnum(int enumVal, int bitmaskEnum)
         {
             return (bitmaskEnum & enumVal) != 0;

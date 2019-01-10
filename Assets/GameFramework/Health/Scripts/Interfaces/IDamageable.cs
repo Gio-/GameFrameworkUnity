@@ -2,7 +2,7 @@
 {
     public interface IDamageable<T>
     {
-        void Hit  (T value, UnityEngine.GameObject damager);
+        void Hit  (DamageInfo info);
         void Gain (T value);
         void Set  (T value);
     }
