@@ -9,6 +9,8 @@
 using System.Collections.Generic;
 using System;
 
+
+
 public class EventManager {
 
     /// <summary>
@@ -20,7 +22,7 @@ public class EventManager {
     public delegate void Callback<T, U>(T argument1, U argument2);
 
     /// Dictionary holding every event.
-    private static Dictionary<string, Delegate> events = new Dictionary<string, Delegate> ();
+    private static Dictionary<EventsID, Delegate> events = new Dictionary<EventsID, Delegate> ();
 
     /// Generate Event Manager Helper in order to clear dictionary
     /// any time we decide to.
@@ -30,17 +32,12 @@ public class EventManager {
     /// Function that trigger every function associated
     /// to a registered event by its name.
     /// </summary>
-    /// <param name="eventName">Event's name</param>
-    public static void TriggerEvent(string eventName)
+    /// <param name="eventID">Event's name</param>
+    public static void TriggerEvent(EventsID eventID)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            Callback callback = events[eventName] as Callback;
-
-            if(callback != null)
-            {
-                callback();
-            }
+            (events[eventID] as Callback)?.Invoke();
         }
     }
 
@@ -49,18 +46,13 @@ public class EventManager {
     /// to a registered event by its name with an argument.
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="arg1">Argument to pass</param>
-    public static void TriggerEvent<T>(string eventName, T arg1)
+    public static void TriggerEvent<T>(EventsID eventID, T arg1)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            Callback<T> callback = events[eventName] as Callback<T>;
-
-            if (callback != null)
-            {
-                callback(arg1);
-            }
+            (events[eventID] as Callback<T>)?.Invoke(arg1);
         }
     }
 
@@ -70,19 +62,14 @@ public class EventManager {
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
     /// <typeparam name="U">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="arg1">First Argument to pass</param>
     /// <param name="arg2">Second Argument to pass</param>
-    public static void TriggerEvent<T, U>(string eventName, T arg1, U arg2)
+    public static void TriggerEvent<T, U>(EventsID eventID, T arg1, U arg2)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            Callback<T, U> callback = events[eventName] as Callback<T, U>;
-
-            if (callback != null)
-            {
-                callback(arg1, arg2);
-            }
+            (events[eventID] as Callback<T, U>)?.Invoke(arg1, arg2);
         }
     }
 
@@ -90,12 +77,12 @@ public class EventManager {
     /// Add a listener to specific event. If event is not 
     /// registrated, then add it in the dictionary.
     /// </summary>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="listener">Function to execute when event is triggered</param>
-    public static void StartListening(string eventName, Callback listener)
+    public static void StartListening(EventsID eventID, Callback listener)
     {
-        if (!events.ContainsKey(eventName)) events.Add(eventName, null);
-        events[eventName] = (Callback)events[eventName] + listener;
+        if (!events.ContainsKey(eventID)) events.Add(eventID, null);
+        events[eventID] = (Callback)events[eventID] + listener;
     }
 
     /// <summary>
@@ -103,12 +90,12 @@ public class EventManager {
     /// registrated, then add it in the dictionary.
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="listener">Function to execute when event is triggered</param>
-    public static void StartListening<T>(string eventName, Callback<T> listener)
+    public static void StartListening<T>(EventsID eventID, Callback<T> listener)
     {
-        if (!events.ContainsKey(eventName)) events.Add(eventName, null);
-        events[eventName] = (Callback<T>)events[eventName] + listener;
+        if (!events.ContainsKey(eventID)) events.Add(eventID, null);
+        events[eventID] = (Callback<T>)events[eventID] + listener;
     }
 
     /// <summary>
@@ -117,27 +104,27 @@ public class EventManager {
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
     /// <typeparam name="U">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="listener">Function to execute when event is triggered</param>
-    public static void StartListening<T, U>(string eventName, Callback<T, U> listener)
+    public static void StartListening<T, U>(EventsID eventID, Callback<T, U> listener)
     {
-        if (!events.ContainsKey(eventName)) events.Add(eventName, null);
-        events[eventName] = (Callback<T, U>)events[eventName] + listener;
+        if (!events.ContainsKey(eventID)) events.Add(eventID, null);
+        events[eventID] = (Callback<T, U>)events[eventID] + listener;
     }
 
     /// <summary>
     /// Delete a listener from a registered event. If event
     /// has no more listener, then will be removed.
     /// </summary>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="handler">Function registered when listener was added</param>
-    public static void StopListening(string eventName, Callback handler)
+    public static void StopListening(EventsID eventID, Callback handler)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            events[eventName] = (Callback)events[eventName] - handler;
+            events[eventID] = (Callback)events[eventID] - handler;
 
-            if (events[eventName] == null) events.Remove(eventName);
+            if (events[eventID] == null) events.Remove(eventID);
         }
     }
 
@@ -146,15 +133,15 @@ public class EventManager {
     /// has no more listener, then will be removed.
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="handler">Function registered when listener was added</param>
-    public static void StopListening<T>(string eventName, Callback<T> handler)
+    public static void StopListening<T>(EventsID eventID, Callback<T> handler)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            events[eventName] = (Callback<T>)events[eventName] - handler;
+            events[eventID] = (Callback<T>)events[eventID] - handler;
 
-            if (events[eventName] == null) events.Remove(eventName);
+            if (events[eventID] == null) events.Remove(eventID);
         }
     }
 
@@ -164,15 +151,15 @@ public class EventManager {
     /// </summary>
     /// <typeparam name="T">Any Types</typeparam>
     /// <typeparam name="U">Any Types</typeparam>
-    /// <param name="eventName">Event's name</param>
+    /// <param name="eventID">Event's name</param>
     /// <param name="handler">Function registered when listener was added</param>
-    public static void StopListening<T, U>(string eventName, Callback<T, U> handler)
+    public static void StopListening<T, U>(EventsID eventID, Callback<T, U> handler)
     {
-        if (events.ContainsKey(eventName))
+        if (events.ContainsKey(eventID))
         {
-            events[eventName] = (Callback<T, U>)events[eventName] - handler;
+            events[eventID] = (Callback<T, U>)events[eventID] - handler;
 
-            if (events[eventName] == null) events.Remove(eventName);
+            if (events[eventID] == null) events.Remove(eventID);
         }
     }
 

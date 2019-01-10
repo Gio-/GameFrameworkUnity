@@ -273,6 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701495268}
   - component: {fileID: 1701495269}
+  - component: {fileID: 1701495270}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -311,4 +312,27 @@ MonoBehaviour:
   m_positionOffset: {x: 0, y: 0, z: 0}
   m_rotation: 0
   m_rotationOffset: {x: 0, y: 0, z: 0}
-  m_smooth: 0.5
+  m_smoothPosition: 0.5
+  m_smoothRotation: 2
+--- !u!114 &1701495270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701495267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbccd96ac3f847a45bae82561e655718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeWhen: 8
+  allowedLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  eventToListen: 1
+  actionToExecute:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
