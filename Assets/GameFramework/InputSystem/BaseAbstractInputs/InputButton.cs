@@ -7,7 +7,6 @@ namespace GameFramework
         #region VARIABLES
         [SerializeField] protected string inputName = "Fire";
         #endregion
-
         #region PROPERTIES
         public string InputName
         {
@@ -21,7 +20,6 @@ namespace GameFramework
             this.inputName = inputName;
         }
         #endregion
-
         #region METHODS
         public abstract bool GetButtonDown(int playerId);
         public abstract bool GetButtonHeld(int playerId);

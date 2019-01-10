@@ -6,6 +6,7 @@ namespace GameFramework
     public class InputButtonUnity : InputButton
     {
         #region VARIABLES
+        protected System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
         #endregion
         #region PROPERTIES
         #endregion
@@ -16,17 +17,17 @@ namespace GameFramework
 
         public override bool GetButtonDown(int playerId)
         {
-            return CanExecute() && (playerId > 0 ? Input.GetButtonDown(inputName + "_" + playerId) : Input.GetButtonDown(inputName));
+            return CanExecute() && (playerId > 0 ? Input.GetButtonDown(strBuilder.Clear().Append(inputName).Append("_").Append(playerId).ToString()) : Input.GetButtonDown(inputName));
         }
 
         public override bool GetButtonHeld(int playerId)
         {
-            return CanExecute() && (playerId > 0 ? Input.GetButton(inputName + "_" + playerId) : Input.GetButton(inputName));
+            return CanExecute() && (playerId > 0 ? Input.GetButton(strBuilder.Clear().Append(inputName).Append("_").Append(playerId).ToString()) : Input.GetButton(inputName));
         }
 
         public override bool GetButtonUp(int playerId)
         {
-            return CanExecute() && (playerId > 0 ? Input.GetButtonUp(inputName + "_" + playerId) : Input.GetButtonUp(inputName));
+            return CanExecute() && (playerId > 0 ? Input.GetButtonUp(strBuilder.Clear().Append(inputName).Append("_").Append(playerId).ToString()) : Input.GetButtonUp(inputName));
         }
 
         public override void GainControl()

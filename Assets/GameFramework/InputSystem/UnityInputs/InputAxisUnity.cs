@@ -5,6 +5,9 @@ namespace GameFramework
     [System.Serializable]
     public class InputAxisUnity :InputAxis
     {
+        #region VARIABLES
+        protected System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
+        #endregion
         #region CONSTRUCTOR
         public InputAxisUnity(string inputName):base(inputName)
         {
@@ -18,7 +21,7 @@ namespace GameFramework
                 return 0;
             else
             {
-                return playerId > 0 ? Input.GetAxis(inputName + "_" + playerId) : Input.GetAxis(inputName);
+                return playerId > 0 ? Input.GetAxis(strBuilder.Clear().Append(inputName).Append("_").Append(playerId).ToString()) : Input.GetAxis(inputName);
             }
         }
         public override float GetAxisRaw(int playerId)
@@ -26,7 +29,7 @@ namespace GameFramework
             if (!CanExecute())
                 return 0;
             else
-                return playerId > 0 ? Input.GetAxisRaw(inputName + "_" + playerId) : Input.GetAxisRaw(inputName);
+                return playerId > 0 ? Input.GetAxisRaw(strBuilder.Clear().Append(inputName).Append("_").Append(playerId).ToString()) : Input.GetAxisRaw(inputName);
         }
         
         #endregion
