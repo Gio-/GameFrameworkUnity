@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    public class PlayAudio : MonoBehaviour
+    public class PlayAudio : ExecuteAction
     {
         #region VARIABLES
         [SerializeField]
@@ -25,103 +25,99 @@ namespace GameFramework
         #endregion
 
         #region MONOBEHAVIOUR METHODS
-        void Start()
+
+        protected override void Awake()
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.START))
-                PlayClip(audioDefinition);
+            actionToExecute.AddListener(PlayClip);
         }
-        private void OnEnable()
+        protected override void Start()
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.ENABLE))
-                PlayClip(audioDefinition);
-        }
-        private void OnDisable()
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.DISABLE))
-                PlayClip(audioDefinition);
-        }
-        private void OnDestroy()
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.DESTROY))
-                PlayClip(audioDefinition);
+            base.Start();
         }
 
+
         #region COLLISION/TRIGGER DETECTIONS
-        private void OnCollisionEnter(Collision collision)
+        /*protected override void OnCollisionEnter(Collision collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONENTER) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
 
                 PlayClip(audioDefinition);
-        }
-        private void OnCollisionStay(Collision collision)
+        }*/
+        protected override void OnCollisionStay(Collision collision)
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONSTAY) 
-                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer)
+            if (executeWhen.Equals(ExecuteWhen.COLLISIONSTAY) 
+                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, allowedLayers)
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
 
-                PlayClip(audioDefinition);
+                Execute();
         }
-        private void OnCollisionExit(Collision collision)
+        /*protected override void OnCollisionExit(Collision collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONEXIT) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
 
                 PlayClip(audioDefinition);
-        }
-        private void OnCollisionEnter2D(Collision2D collision)
+        }*/
+        /*protected override void OnCollisionEnter2D(Collision2D collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONENTER2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
-        private void OnCollisionStay2D(Collision2D collision)
+        }*/
+        protected override void OnCollisionStay2D(Collision2D collision)
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONSTAY2D) 
-                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer)
+            if (executeWhen.Equals(ExecuteWhen.COLLISIONSTAY2D) 
+                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, allowedLayers)
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
-                PlayClip(audioDefinition);
+                Execute();
         }
-        private void OnCollisionExit2D(Collision2D collision)
+        /*protected override void OnCollisionExit2D(Collision2D collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONEXIT2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
-        private void OnTriggerEnter(Collider other)
+        }*/
+        /*protected override void OnTriggerEnter(Collider other)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERENTER) && Utilities.LayerIsInLayerMask(other.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
-        private void OnTriggerStay(Collider other)
+        }*/
+        protected override void OnTriggerStay(Collider other)
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERSTAY) 
-                && Utilities.LayerIsInLayerMask(other.gameObject.layer,audioDefinition.allowedLayer)
+            if (executeWhen.Equals(ExecuteWhen.TRIGGERSTAY) 
+                && Utilities.LayerIsInLayerMask(other.gameObject.layer,allowedLayers)
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
-                PlayClip(audioDefinition);
+                Execute();
         }
-        private void OnTriggerExit(Collider other)
+        /*protected override void OnTriggerExit(Collider other)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGEREXIT) && Utilities.LayerIsInLayerMask(other.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
-        private void OnTriggerEnter2D(Collider2D collision)
+        }*/
+        /*protected override void OnTriggerEnter2D(Collider2D collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERENTER2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
-        private void OnTriggerStay2D(Collider2D collision)
+        }*/
+        protected override void OnTriggerStay2D(Collider2D collision)
         {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERSTAY2D) 
-                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer)
+            if (executeWhen.Equals(ExecuteWhen.TRIGGERSTAY2D) 
+                && Utilities.LayerIsInLayerMask(collision.gameObject.layer, allowedLayers)
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
-                PlayClip(audioDefinition);
+                Execute();
         }
-        private void OnTriggerExit2D(Collider2D collision)
+        /*protected override void OnTriggerExit2D(Collider2D collision)
         {
             if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGEREXIT2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
                 PlayClip(audioDefinition);
-        }
+        }*/
         #endregion
         #endregion
 
         #region GENERIC METHODS
+
+        public override void Execute()
+        {
+            base.Execute();
+        }
+
         public void PlayClip(PlayableAudioDefinition audioDefinition)
         {
             AudioClipSettings clipSettings;
@@ -152,6 +148,10 @@ namespace GameFramework
             //Play Audio
             currentPlayngAudio = AudioManager.PlayAudio(audioDefinition.audioClip.name, clipSettings, audioSettings3D);
         }
+        public void PlayClip()
+        {
+            PlayClip(audioDefinition);
+        }
         #endregion
 
     }
@@ -160,13 +160,6 @@ namespace GameFramework
     public class PlayableAudioDefinition
     {
         public AudioClip audioClip;
-        public ExecuteWhen playEvent;
-        [Space]
-        [ShowIf("playEvent", 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)]
-        public LayerMask allowedLayer;
-        [ShowIf("playEvent", 1)]
-        public EventsID eventToListen;
-        [Space]
         [Header("Customizations")]
         public float volume = 1f;
         [Tooltip("If another instance of this audio can overlap old one")]

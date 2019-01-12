@@ -36,8 +36,11 @@ namespace GameFramework {
                 if (s_Instance == null)
                 {
                     s_Instance = FindObjectOfType(typeof(AudioManager)) as AudioManager;
-                    if (s_Instance == null)
-                        Debug.LogError("AudioManager is not on scene");
+                    /*if (s_Instance == null) {
+                        GameObject go = Instantiate(new GameObject());
+                        go.name = "AudioManager";
+                        s_Instance = go.AddComponent<AudioManager>();
+                    }*/
                 }
 
                 return s_Instance;
@@ -123,11 +126,13 @@ namespace GameFramework {
         {
             foreach(AudioSource aSource in audioSourcePool[audioSourceId])
             {
-                GameObject audioObj = aSource.gameObject;
-                //TODO ATTENZIONE!!!!! al momento l' useActive non si comporta come dovrebbe 
-                //non sovrascrive un dato audio ma sovrascrive solo se trova  un audio con la stessa key abilitato nella pool
-                if ((useActive && audioObj.activeSelf) || (!useActive && !audioObj.activeSelf))
-                    return aSource;
+                if(aSource != null) { 
+                    GameObject audioObj = aSource.gameObject;
+                    //TODO ATTENZIONE!!!!! al momento l' useActive non si comporta come dovrebbe 
+                    //non sovrascrive un dato audio ma sovrascrive solo se trova  un audio con la stessa key abilitato nella pool
+                    if ((useActive && audioObj.activeSelf) || (!useActive && !audioObj.activeSelf))
+                        return aSource;
+                }
             }
             //If audio is not available i add one to pool and return it
             return AddAudioToPool(audioSourceId);
@@ -142,7 +147,7 @@ namespace GameFramework {
         /// <returns></returns>
         public static AudioSource PlayAudio(string audioSourceId, AudioClipSettings settings, AudioSettings3D settings3d = null)
         {
-            if (settings.clip == null)
+            if (AudioManager.Instance == null || settings.clip == null)
                 return null;
 
             if (string.IsNullOrEmpty(audioSourceId)) //IF id is empty i will use clip.name
@@ -223,7 +228,8 @@ namespace GameFramework {
             {
                 foreach(AudioSource source in AudioManager.Instance.audioSourcePool[audioSourceId])
                 {
-                    source.Stop();
+                    if (source != null)
+                        source.Stop();
                 }
             }
         }

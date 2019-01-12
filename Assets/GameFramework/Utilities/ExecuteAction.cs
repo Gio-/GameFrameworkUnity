@@ -26,12 +26,16 @@ namespace GameFramework
         protected LayerMask allowedLayers;
         [ShowIf("executeWhen", 1)]
         public EventsID eventToListen;
+
  
         #endregion
         #region EVENTS
-        [SerializeField]
-        protected UnityEngine.Events.UnityEvent actionToExecute;
+        public UnityEngine.Events.UnityEvent actionToExecute;
         #endregion
+
+        protected virtual void Awake()
+        {
+        }
 
         #region MONOBEHAVIOUR METHODS
         protected virtual void Start()
@@ -46,6 +50,8 @@ namespace GameFramework
         }
         protected virtual void OnDisable()
         {
+
+
             if (executeWhen.Equals(ExecuteWhen.DISABLE))
                 Execute();
         }
@@ -53,6 +59,7 @@ namespace GameFramework
         {
             if (executeWhen.Equals(ExecuteWhen.DESTROY))
                 Execute();
+            actionToExecute.RemoveAllListeners();
         }
 
         #region COLLISION/TRIGGER DETECTIONS
@@ -121,10 +128,10 @@ namespace GameFramework
 
         #region GENERIC METHODS
 
-        public void Execute()
+        public virtual void Execute()
         {
             actionToExecute?.Invoke();
-            Debug.Log("TEST");
+            Debug.Log("EXECUTED ACTION");
         }
        
         #endregion
