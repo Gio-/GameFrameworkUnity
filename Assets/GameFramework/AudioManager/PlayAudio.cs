@@ -2,7 +2,7 @@
  * @author Fabrizio Coppolecchia
  *
  * Component used to play audio. Usage:
- * 1 - Attach to a object, select when you want to play audio from playEvent dropdown
+ * 1 - Attach to a object, select when you want to execute an action using executeWhen dropdown
  * 2 - make sure to attach right collider and eventually attach rigidbody to detect collision if you use trigger/trigger2D/collision/collision2d
  * 3 - define audio parameters
  * 
@@ -19,30 +19,18 @@ namespace GameFramework
     public class PlayAudio : ExecuteAction
     {
         #region VARIABLES
-        [SerializeField]
         private PlayableAudioDefinition audioDefinition = null;
         private AudioSource currentPlayngAudio = null;
         #endregion
 
-        #region MONOBEHAVIOUR METHODS
-
+        #region MONOBEHAVIOUR METHODS OVERRIDES
         protected override void Awake()
         {
             actionToExecute.AddListener(PlayClip);
-        }
-        protected override void Start()
-        {
-            base.Start();
+            base.Awake();
         }
 
-
-        #region COLLISION/TRIGGER DETECTIONS
-        /*protected override void OnCollisionEnter(Collision collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONENTER) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-
-                PlayClip(audioDefinition);
-        }*/
+        #region COLLISION/TRIGGER DETECTIONS OVERRIDES
         protected override void OnCollisionStay(Collision collision)
         {
             if (executeWhen.Equals(ExecuteWhen.COLLISIONSTAY) 
@@ -51,17 +39,6 @@ namespace GameFramework
 
                 Execute();
         }
-        /*protected override void OnCollisionExit(Collision collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONEXIT) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-
-                PlayClip(audioDefinition);
-        }*/
-        /*protected override void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONENTER2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
         protected override void OnCollisionStay2D(Collision2D collision)
         {
             if (executeWhen.Equals(ExecuteWhen.COLLISIONSTAY2D) 
@@ -69,16 +46,6 @@ namespace GameFramework
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
                 Execute();
         }
-        /*protected override void OnCollisionExit2D(Collision2D collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.COLLISIONEXIT2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
-        /*protected override void OnTriggerEnter(Collider other)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERENTER) && Utilities.LayerIsInLayerMask(other.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
         protected override void OnTriggerStay(Collider other)
         {
             if (executeWhen.Equals(ExecuteWhen.TRIGGERSTAY) 
@@ -86,16 +53,6 @@ namespace GameFramework
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
                 Execute();
         }
-        /*protected override void OnTriggerExit(Collider other)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGEREXIT) && Utilities.LayerIsInLayerMask(other.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
-        /*protected override void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGERENTER2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
         protected override void OnTriggerStay2D(Collider2D collision)
         {
             if (executeWhen.Equals(ExecuteWhen.TRIGGERSTAY2D) 
@@ -103,21 +60,14 @@ namespace GameFramework
                 && (currentPlayngAudio == null || !currentPlayngAudio.isPlaying))
                 Execute();
         }
-        /*protected override void OnTriggerExit2D(Collider2D collision)
-        {
-            if (audioDefinition.playEvent.Equals(ExecuteWhen.TRIGGEREXIT2D) && Utilities.LayerIsInLayerMask(collision.gameObject.layer, audioDefinition.allowedLayer))
-                PlayClip(audioDefinition);
-        }*/
         #endregion
         #endregion
 
-        #region GENERIC METHODS
-
-        public override void Execute()
-        {
-            base.Execute();
-        }
-
+        #region GENERIC METHODS AND OVERRIDES
+        /// <summary>
+        /// Play a clip using PlayableAudioDefinition param
+        /// </summary>
+        /// <param name="audioDefinition">Define how the clip must be played</param>
         public void PlayClip(PlayableAudioDefinition audioDefinition)
         {
             AudioClipSettings clipSettings;
@@ -148,7 +98,10 @@ namespace GameFramework
             //Play Audio
             currentPlayngAudio = AudioManager.PlayAudio(audioDefinition.audioClip.name, clipSettings, audioSettings3D);
         }
-        public void PlayClip()
+        /// <summary>
+        /// Play the clip using internal PlayableAudioDefinition
+        /// </summary>
+        private void PlayClip()
         {
             PlayClip(audioDefinition);
         }
@@ -156,33 +109,5 @@ namespace GameFramework
 
     }
 
-    [Serializable]
-    public class PlayableAudioDefinition
-    {
-        public AudioClip audioClip;
-        [Header("Customizations")]
-        public float volume = 1f;
-        [Tooltip("If another instance of this audio can overlap old one")]
-        public bool onceAtTime = false;
-        public bool loop = false;
-        public bool hasRandomPitch = false;
-        [ShowIf("hasRandomPitch", true)]
-        public float minRandomPitch = .9f;
-        [ShowIf("hasRandomPitch", true)]
-        public float maxRandomPitch = 1.1f;
-        [Space]
-        public bool is3Daudio = false;
-        [ShowIf("is3Daudio", true)]
-        public AudioRolloffMode rollofMode = AudioRolloffMode.Linear;
-        [ShowIf("is3Daudio", true)]
-        public float spatialBlend = 1;
-        [ShowIf("is3Daudio", true)]
-        public float minDistance = 1;
-        [ShowIf("is3Daudio", true)]
-        public float maxDistance = 500;
-
-        //USED FROM USER TO STORE REFERENCE OF THIS AUDIO ACTION AND REMOVE IT ON OBJECT DISABLE/DESTROY
-        public  EventManager.Callback handler;
-
-    }
+    
 }
