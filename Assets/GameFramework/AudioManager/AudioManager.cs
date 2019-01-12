@@ -114,8 +114,7 @@ namespace GameFramework {
             return aSource;
         }
 
-        //NB: useAcrive non è necessario perchè se ti serve sovrascrivere degli audio basta che ti salvi l' audio ricevuto dal playAudio e usi quello.
-        //Monitora e nel caso rimuovilo
+
         /// <summary>
         /// Get Audio from pool
         /// </summary>
@@ -221,7 +220,10 @@ namespace GameFramework {
             return PlayAudio(audioSourceId, audioSettings);
         }
 
-
+        /// <summary>
+        /// Stop Specific audioSource
+        /// </summary>
+        /// <param name="audioSourceId">the pooled object name (usually clip name)</param>
         public static void StopAudio(string audioSourceId)
         {
             if (AudioManager.Instance.audioSourcePool.ContainsKey(audioSourceId))
@@ -233,6 +235,9 @@ namespace GameFramework {
                 }
             }
         }
+        /// <summary>
+        /// Stop all the audio
+        /// </summary>
         public static void StopAllAudio()
         {
             foreach(KeyValuePair<string,List<AudioSource>> audioList in AudioManager.Instance.audioSourcePool)
@@ -241,6 +246,10 @@ namespace GameFramework {
             }
         }
 
+        /// <summary>
+        /// Pause specific audioSource
+        /// </summary>
+        /// <param name="audioSourceId">the pooled object name (usually clip name)</param>
         public static void PauseAudio(string audioSourceId)
         {
 
@@ -258,6 +267,9 @@ namespace GameFramework {
                 }
             }
         }
+        /// <summary>
+        /// Pause all the audio
+        /// </summary>
         public static void PauseAllAudio()
         {
             ResumeAllAudio();
@@ -269,6 +281,10 @@ namespace GameFramework {
             }
         }
 
+        /// <summary>
+        /// Remume Specific AudioSource if it has paused with PauseAudio function or PauseAllAudio
+        /// </summary>
+        /// <param name="audioSourceId">the pooled object name (usually clip name)</param>
         public static void ResumeAudio(string audioSourceId)
         {
             if (AudioManager.Instance.pausedAudio.ContainsKey(audioSourceId))
@@ -281,6 +297,9 @@ namespace GameFramework {
                 }
             }
         }
+        /// <summary>
+        /// Resume all the audio previously paused
+        /// </summary>
         public static void ResumeAllAudio()
         {
             foreach (KeyValuePair<string, List<AudioSource>> audioList in AudioManager.Instance.audioSourcePool)
