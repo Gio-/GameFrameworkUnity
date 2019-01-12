@@ -608,6 +608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 999154863}
   - component: {fileID: 999154862}
+  - component: {fileID: 999154864}
   m_Layer: 0
   m_Name: '---- SIMPLE EXECUTE ACTION (DISABLE THIS TO DISABLE EXAMPLES)'
   m_TagString: Untagged
@@ -656,12 +657,45 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999154861}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.7246094, y: 1.7929688, z: -8.984375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1320257591}
-  m_RootOrder: 6
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &999154864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999154861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbccd96ac3f847a45bae82561e655718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeWhen: 3
+  allowedLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  eventToListen: 0
+  actionToExecute:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1320257590}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1102664551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,7 +1069,6 @@ Transform:
   - {fileID: 1632623803}
   - {fileID: 334664765}
   - {fileID: 1785631726}
-  - {fileID: 999154863}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

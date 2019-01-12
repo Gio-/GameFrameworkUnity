@@ -130,8 +130,10 @@ namespace GameFramework
 
         public virtual void Execute()
         {
-            actionToExecute?.Invoke();
-            Debug.Log("EXECUTED ACTION");
+            //if (gameObject.activeSelf) { 
+                actionToExecute?.Invoke();
+                Debug.Log("EXECUTED ACTION");
+            //}
         }
        
         #endregion
