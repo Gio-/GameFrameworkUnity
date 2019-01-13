@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+public enum InfoBoxMessageType { None, Info, Warning, Error }
+
 [AttributeUsage(AttributeTargets.Field, Inherited = true)]
 public class InfoBoxAttribute : PropertyAttribute
 {
     public readonly string text;
 #if UNITY_EDITOR
-    public readonly MessageType type;
+    public readonly InfoBoxMessageType type;
 #endif
 
     /// <summary>
@@ -17,15 +19,9 @@ public class InfoBoxAttribute : PropertyAttribute
     /// </summary>
     /// <param name="text">The help text to be displayed in the HelpBox.</param>
     /// <param name="type">The icon to be displayed in the HelpBox.</param>
-    public InfoBoxAttribute(string text
-#if UNITY_EDITOR
-, MessageType type = MessageType.Info
-#endif
-)
+    public InfoBoxAttribute(string text , InfoBoxMessageType type = InfoBoxMessageType.Info)
     {
         this.text = text;
-#if UNITY_EDITOR
         this.type = type;
-#endif
     }
 }

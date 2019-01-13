@@ -9,7 +9,7 @@ public class HelpDrawer : PropertyDrawer
     const int paddingHeight = 8;
 
     // Used to add some margin between the the HelpBox and the property.
-    const int marginHeight = 2;
+    const int marginHeight = 5;
 
     //  Global field to store the original (base) property height.
     float baseHeight = 0;
@@ -79,6 +79,17 @@ public class HelpDrawer : PropertyDrawer
         return height > minHeight ? height + baseHeight + addedHeight : minHeight + baseHeight + addedHeight;
     }
 
+    private MessageType GetMessageType(InfoBoxMessageType helpBoxMessageType)
+    {
+        switch (helpBoxMessageType)
+        {
+            default:
+            case InfoBoxMessageType.None: return MessageType.None;
+            case InfoBoxMessageType.Info: return MessageType.Info;
+            case InfoBoxMessageType.Warning: return MessageType.Warning;
+            case InfoBoxMessageType.Error: return MessageType.Error;
+        }
+    }
 
     public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
     {
@@ -101,10 +112,10 @@ public class HelpDrawer : PropertyDrawer
         }
 
         // Renders the HelpBox in the Unity inspector UI.
-        EditorGUI.HelpBox(helpPos, helpAttribute.text, helpAttribute.type);
+        EditorGUI.HelpBox(helpPos, helpAttribute.text, GetMessageType(helpAttribute.type));
 
         position.y += helpPos.height + marginHeight;
-        position.height = baseHeight;
+        position.height =  baseHeight;
 
 
         // If we have a RangeAttribute on our field, we need to handle the PropertyDrawer differently to
@@ -150,7 +161,7 @@ public class HelpDrawer : PropertyDrawer
             {
                 // Again with a MultilineAttribute on a non-text field deserves for the standard property field
                 // to be drawn as punishment :P
-                EditorGUI.PropertyField(position, prop, label);
+                EditorGUI.PropertyField(position, prop, label,true);
             }
         }
         else
@@ -158,7 +169,7 @@ public class HelpDrawer : PropertyDrawer
             // If we get to here it means we're drawing the default property field below the HelpBox. More custom
             // and built in PropertyDrawers could be implemented to enable HelpBox but it could easily make for
             // hefty else/if block which would need refactoring!
-            EditorGUI.PropertyField(position, prop, label);
+            EditorGUI.PropertyField(position, prop, label, true);
         }
 
         EditorGUI.EndProperty();

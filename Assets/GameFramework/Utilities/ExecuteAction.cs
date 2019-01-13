@@ -14,11 +14,21 @@
 using System;
 using UnityEngine;
 
+
+
 namespace GameFramework
 {
     public class ExecuteAction : MonoBehaviour
     {
         #region VARIABLES
+        
+        [InfoBox(
+            "NB: THIS INSTRUCTION ARE SPECIFIC FOR ExecuteAction COMPONENT, CHECK FOR --->EXTENDED INSTRUCTION <--- IF YOU ARE USING A CHILD COMPONENT \n\n" +
+            "1 - Attach to a object, select when you want to execute an action using executeWhen dropdown \n" +
+            "2 - make sure to attach right collider and eventually attach rigidbody to detect collision if you use trigger|trigger2D|collision|collision2d \n" +
+            "3 - add any action to actionToExecute UnityEvent(by inspector)\n"
+            )
+        ]
         [SerializeField]
         protected ExecuteWhen executeWhen; //WHEN THE UnityEvent is invoked
         [ShowIf("executeWhen", 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)]
@@ -28,8 +38,9 @@ namespace GameFramework
         public EventsID eventToListen; //Event 
 
         //Used do determine when subscribe and unsubscribe execute action on EventManager in case di executeWhen = Event 
+
         [SerializeField]
-        [InfoBox("REMEMBER TO SET TRUE IF OBJECT IS PART OF POOL", UnityEditor.MessageType.Warning)]
+        [InfoBox("REMEMBER TO SET TRUE IF OBJECT IS PART OF POOL", InfoBoxMessageType.Warning)]
         protected bool isPooledObject = false;
 
         #endregion

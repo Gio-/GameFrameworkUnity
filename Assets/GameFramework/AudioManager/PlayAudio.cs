@@ -19,6 +19,7 @@ namespace GameFramework
     public class PlayAudio : ExecuteAction
     {
         #region VARIABLES
+        [SerializeField]
         private PlayableAudioDefinition audioDefinition = null;
         private AudioSource currentPlayngAudio = null;
         #endregion
