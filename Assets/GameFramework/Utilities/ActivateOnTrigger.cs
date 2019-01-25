@@ -9,8 +9,8 @@ public class ActivateOnTrigger : MonoBehaviour
 {
     [Header("Valid Layers")]
     [SerializeField]
-    private LayerMask m_activateForLayers;
-    private Collider  m_collider;
+    protected LayerMask m_activateForLayers;
+    protected Collider  m_collider;
 
     [Space(10)]
     public UnityEvent OnEnterTrigger;
@@ -35,6 +35,8 @@ public class ActivateOnTrigger : MonoBehaviour
             {
                 OnEnterTrigger.Invoke();
             }
+
+            ExecuteOnTriggerEnter(other);
         }
     }
 
@@ -46,8 +48,18 @@ public class ActivateOnTrigger : MonoBehaviour
             {
                 OnExitTrigger.Invoke();
             }
+
+            ExecuteOnTriggerExit(other);
         }
     }
 
- 
+    public virtual void ExecuteOnTriggerEnter(Collider other)
+    {
+        //
+    }
+
+    public virtual void ExecuteOnTriggerExit(Collider other)
+    {
+        //
+    }
 }
