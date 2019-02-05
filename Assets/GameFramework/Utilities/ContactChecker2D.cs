@@ -6,6 +6,8 @@ namespace GameFramework
     {
         #region VARIABLES
         public bool debugCheckers = true;
+        [SerializeField]
+        private float offsetFromCollider = 0.05f;
         [ShowIf("debugCheckers", true)]
         public Color CheckedObstacleDebugColor = Color.red;
         [ShowIf("debugCheckers", true)]
@@ -17,6 +19,22 @@ namespace GameFramework
         [ShowIf("debugCheckers", true)]
         public Color bottomDebugColor = Color.green;
         #endregion
+
+        //UNCOMMENT TO DEBUG ALL SIDES
+        /*public LayerMask layerMask;
+        Collider2D col;
+        private void Awake()
+        {
+            col = GetComponent<Collider2D>();
+        }
+
+        private void Update()
+        {
+            CheckLeftArea(col, layerMask, .3f);
+            CheckRightArea(col, layerMask, .3f);
+            CheckTopArea(col, layerMask, .3f);
+            CheckBottomArea(col, layerMask, .3f);
+        }*/
 
         #region SIDES CHECKS
         /// <summary>
@@ -30,9 +48,9 @@ namespace GameFramework
         /// <returns></returns>
         public Collider2D[] CheckLeftArea(Collider2D col, LayerMask layerMask, float areaSize, float marginTop = 0, float marginBottom = 0)
         {
-            Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y);
+            Vector2 bottomLeft = new Vector2(col.bounds.min.x - offsetFromCollider, col.bounds.min.y);
             Vector2 topRight = new Vector2(col.bounds.max.x, col.bounds.max.y);
-            Vector2 topLeft = new Vector2(bottomLeft.x, topRight.y);
+            Vector2 topLeft = new Vector2(bottomLeft.x - offsetFromCollider, topRight.y);
 
             bottomLeft.y += marginBottom;
             topLeft.y -= marginTop;
@@ -65,11 +83,11 @@ namespace GameFramework
         /// <param name="marginTop">Margin from collider top</param>
         /// <param name="marginBottom">Margin from collider bottom</param>
         /// <returns></returns>
-        public Collider2D[] CheckRightArea(Collider2D col,LayerMask layerMask, float areaSize, float marginTop = 0, float marginBottom = 0)
+        public Collider2D[] CheckRightArea(Collider2D col, LayerMask layerMask, float areaSize, float marginTop = 0, float marginBottom = 0)
         {
             Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y);
-            Vector2 topRight = new Vector2(col.bounds.max.x, col.bounds.max.y);
-            Vector2 bottomRight = new Vector2(topRight.x, bottomLeft.y);
+            Vector2 topRight = new Vector2(col.bounds.max.x + offsetFromCollider, col.bounds.max.y);
+            Vector2 bottomRight = new Vector2(topRight.x + offsetFromCollider, bottomLeft.y);
             bottomRight.y += marginBottom;
             topRight.y -= marginTop;
 
@@ -103,9 +121,9 @@ namespace GameFramework
         /// <param name="marginRight">Margin from collider right</param>
         public Collider2D[] CheckTopArea(Collider2D col, LayerMask layerMask, float areaSize, float marginLeft = 0, float marginRight = 0)
         {
-            Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y);
-            Vector2 topRight = new Vector2(col.bounds.max.x, col.bounds.max.y);
-            Vector2 topLeft = new Vector2(bottomLeft.x, topRight.y);
+            Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y); // 0.05 è l' offset da cui partire per non hittare se stesso
+            Vector2 topRight = new Vector2(col.bounds.max.x, col.bounds.max.y + offsetFromCollider);
+            Vector2 topLeft = new Vector2(bottomLeft.x, topRight.y + offsetFromCollider);
 
             topLeft.x += marginLeft;
             topRight.x -= marginRight;
@@ -141,9 +159,9 @@ namespace GameFramework
         /// <param name="marginRight">Margin from collider right</param>
         public Collider2D[] CheckBottomArea(Collider2D col, LayerMask layerMask, float areaSize, float marginLeft = 0, float marginRight = 0)
         {
-            Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y);
+            Vector2 bottomLeft = new Vector2(col.bounds.min.x, col.bounds.min.y - offsetFromCollider); // 0.05 è l' offset da cui partire per non hittare se stesso
             Vector2 topRight = new Vector2(col.bounds.max.x, col.bounds.max.y);
-            Vector2 bottomRight = new Vector2(topRight.x, bottomLeft.y);
+            Vector2 bottomRight = new Vector2(topRight.x, bottomLeft.y - offsetFromCollider);
 
             bottomRight.x -= marginRight;
             bottomLeft.x += marginLeft;
@@ -153,7 +171,6 @@ namespace GameFramework
             Collider2D[] check = CheckArea(pointA, pointB, layerMask);
             if (debugCheckers)
             {
-                
                 Color debugColor = check.Length > 0 ? CheckedObstacleDebugColor : bottomDebugColor;
 
                 Vector3 point1 = pointA;
@@ -166,16 +183,15 @@ namespace GameFramework
                 DebugUtils.DrawPoly(debugPoints, debugColor);
             }
             Rigidbody2D rb;
-            
+
             return check;
         }
         #endregion
 
         #region ISGROUNDED CHECK
-        public bool IsGrounded(Collider2D col, LayerMask groundMask,float checkerSize =.3f)
+        public bool IsGrounded(Collider2D col, LayerMask groundMask, float checkerSize = .3f)
         {
             return (CheckBottomArea(col, groundMask, checkerSize).Length > 0);
-
         }
         #endregion
 
