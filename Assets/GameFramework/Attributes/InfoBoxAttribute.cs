@@ -22,6 +22,8 @@ public class InfoBoxAttribute : PropertyAttribute
     public InfoBoxAttribute(string text , InfoBoxMessageType type = InfoBoxMessageType.Info)
     {
         this.text = text;
+#if UNITY_EDITOR
         this.type = type;
+#endif
     }
 }
